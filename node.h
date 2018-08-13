@@ -4,7 +4,7 @@
 #define NODE_H_
 
 class Node {
- public:
+public:
   explicit Node(char data);
   char GetData();
   Node* InsertPreviousNode(char data);
@@ -13,6 +13,11 @@ class Node {
   Node* GetNextNode();
   bool ErasePreviousNode();
   bool EraseNextNode();
+
+  Node* m_prevNode;
+  Node* m_nextNode;
+private:
+	char m_myData;
 };
 
 #endif  // NODE_H_

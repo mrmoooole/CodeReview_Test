@@ -17,6 +17,10 @@ class TypingMachine {
   bool TypeKey(char key);
   bool EraseKey();
   std::string Print(char separator);
+
+private:
+	Node* m_pCursorPoint;
+	int m_nDataCount;
 };
 
 #endif  // TYPING_MACHINE_H_
