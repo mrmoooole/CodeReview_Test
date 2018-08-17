@@ -2,11 +2,8 @@
 
 #include "node.h"
 
-Node::Node(char data) {
-	m_myData = data;
-	m_prevNode = nullptr;
-	m_nextNode = nullptr;
-	return;
+Node::Node(char data) : m_prevNode(nullptr), m_nextNode(nullptr), m_myData(data)
+{
 }
 
 char Node::GetData() {
@@ -25,71 +22,57 @@ Node* Node::GetNextNode() {
 
 
 Node* Node::InsertPreviousNode(char data) {
-	Node* orgPrevNode = GetPreviousNode();
 	Node* newPrevNode = new Node(data);
-	if (orgPrevNode != nullptr)
-	{
-		orgPrevNode->m_nextNode = newPrevNode;
-	}
-	newPrevNode->m_prevNode = orgPrevNode;
+	newPrevNode->m_prevNode = m_prevNode;
 	newPrevNode->m_nextNode = this;
+	if (m_prevNode != nullptr) {
+		m_prevNode->m_nextNode = newPrevNode;
+	}
 	m_prevNode = newPrevNode;
 
 	return newPrevNode;
 }
 
 Node* Node::InsertNextNode(char data) {
-	Node* orgNextNode = GetNextNode();
 	Node* newNextNode = new Node(data);
-	if (orgNextNode != nullptr)
-	{
-		orgNextNode->m_prevNode = newNextNode;
-	}
 	newNextNode->m_prevNode = this;
-	newNextNode->m_nextNode = orgNextNode;
+	newNextNode->m_nextNode = m_nextNode;
+	if (m_nextNode != nullptr) {
+		m_nextNode->m_prevNode = newNextNode;
+	}
 	m_nextNode = newNextNode;
 
 	return newNextNode;
 }
 
 bool Node::ErasePreviousNode() {
-	Node* PrevNode = GetPreviousNode();
-	if (PrevNode == nullptr)
-	{
-		return false;
-	}
-	Node* PrevPrevNode = PrevNode->GetPreviousNode();
-	m_prevNode = nullptr;
-	if (PrevPrevNode != nullptr)
-	{
+	if (m_prevNode != nullptr) {
+		Node* PrevNode = m_prevNode;
+		Node* PrevPrevNode = m_prevNode->GetPreviousNode();
 		m_prevNode = PrevPrevNode;
-		PrevPrevNode->m_nextNode = this;
+		if (PrevPrevNode != nullptr) {
+			PrevPrevNode->m_nextNode = this;
+		}
+		delete PrevNode;
+		PrevNode = nullptr;
+		return true;
 	}
-
-	delete PrevNode;
-	PrevNode = nullptr;
-
-	return true;
+	return false;
 }
 
 bool Node::EraseNextNode() {
-	Node* NextNode = GetNextNode();
-	if (NextNode == nullptr)
-	{
-		return false;
-	}
-	Node* NextNextNode = NextNode->GetNextNode();
-	m_nextNode = nullptr;
-	if (NextNextNode != nullptr)
-	{
+	if (m_nextNode != nullptr) {
+		Node* NextNode = GetNextNode();
+		Node* NextNextNode = NextNode->GetNextNode();
 		m_nextNode = NextNextNode;
-		NextNextNode->m_prevNode = this;
+		if (NextNextNode != nullptr) {
+			NextNextNode->m_prevNode = this;
+		}
+		delete NextNode;
+		NextNode = nullptr;
+		return true;
 	}
-
-	delete NextNode;
-	NextNode = nullptr;
-
-	return true;
+	return false;
 }
 
 

@@ -14,9 +14,9 @@ public:
   bool ErasePreviousNode();
   bool EraseNextNode();
 
-  Node* m_prevNode;
-  Node* m_nextNode;
 private:
+	Node* m_prevNode;
+	Node* m_nextNode;
 	char m_myData;
 };
 

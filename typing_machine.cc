@@ -2,49 +2,23 @@
 
 #include "typing_machine.h"
 
-TypingMachine::TypingMachine() {
-	m_pCursorPoint = new Node(' ');
-	m_nDataCount = 0;
-	return;
+TypingMachine::TypingMachine() : m_pCursorPoint(new Node(' ')), m_nDataCount(0) 
+{
 }
 
 void TypingMachine::HomeKey() {
-	Node* prev = m_pCursorPoint->GetPreviousNode();
-	if (prev == nullptr)
+	while (m_pCursorPoint->GetPreviousNode() != nullptr)
 	{
-		return;
+		LeftKey();
 	}
-	prev->EraseNextNode();
-
-	Node* Target = nullptr;
-
-	do 
-	{
-		Target = prev;
-		prev = Target->GetPreviousNode();
-	} while (prev != nullptr);
-
-	m_pCursorPoint = Target->InsertPreviousNode(' ');
 	return;
 }
 
 void TypingMachine::EndKey() {
-	Node* next = m_pCursorPoint->GetNextNode();
-	if (next == nullptr)
+	while (m_pCursorPoint->GetNextNode() != nullptr)
 	{
-		return;
+		RightKey();
 	}
-	next->ErasePreviousNode();
-
-	Node* Target = nullptr;
-
-	do
-	{
-		Target = next;
-		next = Target->GetNextNode();
-	} while (next != nullptr);
-
-	m_pCursorPoint = Target->InsertNextNode(' ');
 	return;
 }
 
